@@ -1,11 +1,24 @@
 // Build a BlackJack Game
 
 // variables representing two cards 
-let firstCard = 10
-let secondCard = 4
+let firstCard;
+let secondCard;
+
+let cards = []
+let lastTries = []
+let lastOutcomes = []
+let hasBlackJack = false
+let isAlive = true
+let messageEl = document.getElementById('message-el')
+let sumEl = document.getElementById('sum-el')
+let cardsEl = document.getElementById('cards-el')
+let tries = document.getElementById('last-tries')
+let outcomes = document.getElementById('last-outcomes')
+
 
 //challenge #1
 //create a new variable and set it to the sum of the two cards 
+let sum = 0;
 
 
 //chalenge #2 
@@ -13,7 +26,102 @@ let secondCard = 4
 // your output should work in the browser's console based on changing the values assigned to the cards
 
 //starter code
-    message = "Do you want to draw a new card? 🙂"
-    message = "Wohoo! You've got Blackjack! 🥳"
-    message = "You're out of the game! 😭"
-console.log(message)
+
+// if (sum < 21) {
+//      message = "Do you want to draw a new card? 🙂"
+// } else if (sum == 21) {
+//     message = "Wohoo! You've got Blackjack! 🥳"
+// } else {
+//     message = "You're out of the game! 😭"
+// }
+// console.log(message)
+
+const addTries = (score) => {
+    if (lastTries.length != 4) {
+        lastTries.push(score)
+    } else {
+        lastTries[0] = lastTries[1]
+        lastTries[1] = lastTries[2]
+        lastTries[2] = lastTries[3]
+        lastTries[3] = score
+        console.log(lastTries)
+    }
+}
+
+const addOutcomes = () => {
+    lastOutcomes = []
+    lastTries.map((score) => {
+        if (score != 21) {
+            lastOutcomes.push("lose")
+        } else {
+            lastOutcomes.push("win")
+        }
+    })
+}
+
+const renderGame = () => {
+
+    let cardsDisplay = "Cards:"
+
+    cards.map((card) => {
+        cardsDisplay += " " + card
+    })
+
+    cardsEl.innerHTML = cardsDisplay
+
+    sumEl.innerHTML = `Sum: ${sum}`
+
+    if (sum < 21) {
+        messageEl.innerHTML = "Do you want to draw a new card? 🙂"
+    } else if (sum == 21) {
+        messageEl.innerHTML = "Wohoo! You've got Blackjack! 🥳"
+        hasBlackJack = true
+        isAlive = false
+    } else {
+        messageEl.innerHTML = "You're out of the game! 😭"
+        isAlive = false
+    }
+}
+
+const newCard = () => {
+    if (isAlive) {
+        let card = getRandomCard()
+        sum += card
+        cards.push(card)
+        renderGame()
+    }
+}
+
+const startGame = () => {
+    if (sum != 0) {
+        addTries(sum)
+        addOutcomes()
+        tries.innerHTML = "Last tries:"
+        outcomes.innerHTML = "Last outcomes:"
+        lastTries.map((score) => {
+            tries.innerHTML += " " + score
+        })
+        lastOutcomes.map((outcome) => {
+            outcomes.innerHTML += " " + outcome
+        })
+    }
+    isAlive = true
+    cards = []
+    firstCard = getRandomCard()
+    secondCard = getRandomCard()
+    cards.push(firstCard)
+    cards.push(secondCard)
+    sum = firstCard + secondCard
+    renderGame()
+}
+
+const getRandomCard = () => {
+    let cardValue = Math.floor(Math.random() * 13) + 1
+    if (cardValue == 1) {
+        return 11;
+    } else if (cardValue > 9) {
+        return 10;
+    } else {
+        return cardValue;
+    }
+}

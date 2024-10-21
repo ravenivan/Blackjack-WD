@@ -1,5 +1,9 @@
 body {
-
+    font-family:'Courier New', Courier, monospace;
+    background-image: url("/images//table.png");
+    color: white;
+    text-align: center;
+    font-weight: 800;
 }
 
 h1 {
@@ -7,5 +11,19 @@ h1 {
 }
 
 #message-el {
-    
+    font-style: italic;
+    font-size: 24px;
+}
+
+button {
+    background-color: goldenrod;
+    margin-top: 8px;
+    margin-right: 20px;
+    padding: 6px 4px;
+    color: green;
+    font-weight: 800;
+    border: none;
+    font-size: 18px;
+    border-radius: 3px;
+    width: 150px;
 }
