@@ -4,8 +4,10 @@
 let firstCard;
 let secondCard;
 
+
 let cards = []
-let lastTries = []
+let lastTries = localStorage.scores ? JSON.parse(localStorage.scores) : []
+console.log(lastTries);
 let lastOutcomes = []
 let hasBlackJack = false
 let isAlive = true
@@ -14,36 +16,23 @@ let sumEl = document.getElementById('sum-el')
 let cardsEl = document.getElementById('cards-el')
 let tries = document.getElementById('last-tries')
 let outcomes = document.getElementById('last-outcomes')
+let userName = document.getElementById('name-name')
 
 
-//challenge #1
-//create a new variable and set it to the sum of the two cards 
 let sum = 0;
 
 
-//chalenge #2 
-// code the statements below based on the conditions shown in blackjack.png from the images folder
-// your output should work in the browser's console based on changing the values assigned to the cards
-
-//starter code
-
-// if (sum < 21) {
-//      message = "Do you want to draw a new card? 🙂"
-// } else if (sum == 21) {
-//     message = "Wohoo! You've got Blackjack! 🥳"
-// } else {
-//     message = "You're out of the game! 😭"
-// }
-// console.log(message)
 
 const addTries = (score) => {
     if (lastTries.length != 4) {
         lastTries.push(score)
+        localStorage.scores = JSON.stringify(lastTries)
     } else {
         lastTries[0] = lastTries[1]
         lastTries[1] = lastTries[2]
         lastTries[2] = lastTries[3]
         lastTries[3] = score
+        localStorage.scores = JSON.stringify(lastTries)
         console.log(lastTries)
     }
 }
@@ -125,3 +114,42 @@ const getRandomCard = () => {
         return cardValue;
     }
 }
+
+/* Local Storage */
+
+const clearStorage = () => {
+    let keepName = localStorage.username
+    localStorage.clear()
+    localStorage.username = keepName
+    lastTries = []
+    tries.innerHTML = "Last tries:"
+    outcomes.innerHTML = "Last outcomes:"
+    console.log("Cleared");
+}
+
+const changeName = () => {
+    let nameInput = prompt("Enter your name: ")
+    localStorage.username = nameInput
+    userName.innerHTML = localStorage.username
+}
+
+if (localStorage.username) {
+    userName.innerHTML = localStorage.username
+} else {
+    let nameInput = prompt("Enter your name: ")
+    localStorage.username = nameInput
+    userName.innerHTML = localStorage.username
+}
+
+if (localStorage.scores) {
+    lastTries.map((score) => {
+        tries.innerHTML += " " + score
+    })
+    addOutcomes()
+    lastOutcomes.map((outcome) => {
+        outcomes.innerHTML += " " + outcome
+    })
+}
+
+
+
